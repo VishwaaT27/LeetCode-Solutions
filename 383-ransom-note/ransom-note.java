@@ -1,19 +1,14 @@
-class Solution
-{
-    public boolean canConstruct(String ransomNote,
-                                String magazine)
-    {
-        int[] count = new int[26];
-
-        for(char c : magazine.toCharArray())
-            count[c - 'a']++;
-
-        for(char c : ransomNote.toCharArray())
-        {
-            if(--count[c - 'a'] < 0)
-                return false;
+class Solution {
+    public boolean canConstruct(String ransomNote, String magazine) {
+        int[] cnt = new int[26];
+        for (int i = 0; i < magazine.length(); ++i) {
+            ++cnt[magazine.charAt(i) - 'a'];
         }
-
+        for (int i = 0; i < ransomNote.length(); ++i) {
+            if (--cnt[ransomNote.charAt(i) - 'a'] < 0) {
+                return false;
+            }
+        }
         return true;
     }
 }

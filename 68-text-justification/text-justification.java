@@ -1,64 +1,32 @@
-class Solution
-{
-    public List<String> fullJustify(String[] words, int maxWidth)
-    {
-        List<String> res = new ArrayList<>();
-        int i = 0;
-
-        while(i < words.length)
-        {
-            int j = i;
-            int len = 0;
-
-            while(j < words.length &&
-                  len + words[j].length() + (j - i) <= maxWidth)
-            {
-                len += words[j].length();
-                j++;
+class Solution {
+    public List<String> fullJustify(String[] words, int maxWidth) {
+        List<String> ans = new ArrayList<>();
+        for (int i = 0, n = words.length; i < n;) {
+            List<String> t = new ArrayList<>();
+            t.add(words[i]);
+            int cnt = words[i].length();
+            ++i;
+            while (i < n && cnt + 1 + words[i].length() <= maxWidth) {
+                cnt += 1 + words[i].length();
+                t.add(words[i++]);
             }
-
-            int gaps = j - i - 1;
-            StringBuilder sb = new StringBuilder();
-
-            if(j == words.length || gaps == 0)
-            {
-                for(int k = i; k < j; k++)
-                {
-                    sb.append(words[k]);
-                    if(k < j - 1)
-                        sb.append(" ");
-                }
-
-                while(sb.length() < maxWidth)
-                    sb.append(" ");
+            if (i == n || t.size() == 1) {
+                String left = String.join(" ", t);
+                String right = " ".repeat(maxWidth - left.length());
+                ans.add(left + right);
+                continue;
             }
-            else
-            {
-                int spaces = (maxWidth - len) / gaps;
-                int extra = (maxWidth - len) % gaps;
-
-                for(int k = i; k < j; k++)
-                {
-                    sb.append(words[k]);
-
-                    if(k < j - 1)
-                    {
-                        for(int s = 0; s < spaces; s++)
-                            sb.append(" ");
-
-                        if(extra > 0)
-                        {
-                            sb.append(" ");
-                            extra--;
-                        }
-                    }
-                }
+            int spaceWidth = maxWidth - (cnt - t.size() + 1);
+            int w = spaceWidth / (t.size() - 1);
+            int m = spaceWidth % (t.size() - 1);
+            StringBuilder row = new StringBuilder();
+            for (int j = 0; j < t.size() - 1; ++j) {
+                row.append(t.get(j));
+                row.append(" ".repeat(w + (j < m ? 1 : 0)));
             }
-
-            res.add(sb.toString());
-            i = j;
+            row.append(t.get(t.size() - 1));
+            ans.add(row.toString());
         }
-
-        return res;
+        return ans;
     }
 }

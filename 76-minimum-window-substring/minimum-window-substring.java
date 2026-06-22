@@ -1,50 +1,30 @@
-class Solution
-{
-    public String minWindow(String s, String t)
-    {
-        if(s.length() < t.length())
-            return "";
-
-        int[] freq = new int[128];
-
-        for(char c : t.toCharArray())
-            freq[c]++;
-
-        int left = 0;
-        int start = 0;
-        int minLen = Integer.MAX_VALUE;
-        int need = t.length();
-
-        for(int right = 0; right < s.length(); right++)
-        {
-            char c = s.charAt(right);
-
-            if(freq[c] > 0)
-                need--;
-
-            freq[c]--;
-
-            while(need == 0)
-            {
-                if(right - left + 1 < minLen)
-                {
-                    minLen = right - left + 1;
-                    start = left;
+class Solution {
+    public String minWindow(String s, String t) {
+        int[] need = new int[128];
+        int[] window = new int[128];
+        for (char c : t.toCharArray()) {
+            ++need[c];
+        }
+        int m = s.length(), n = t.length();
+        int k = -1, mi = m + 1, cnt = 0;
+        for (int l = 0, r = 0; r < m; ++r) {
+            char c = s.charAt(r);
+            if (++window[c] <= need[c]) {
+                ++cnt;
+            }
+            while (cnt == n) {
+                if (r - l + 1 < mi) {
+                    mi = r - l + 1;
+                    k = l;
                 }
-
-                char lc = s.charAt(left);
-
-                freq[lc]++;
-
-                if(freq[lc] > 0)
-                    need++;
-
-                left++;
+                c = s.charAt(l);
+                if (window[c] <= need[c]) {
+                    --cnt;
+                }
+                --window[c];
+                ++l;
             }
         }
-
-        return minLen == Integer.MAX_VALUE
-                ? ""
-                : s.substring(start, start + minLen);
+        return k < 0 ? "" : s.substring(k, k + mi);
     }
 }
