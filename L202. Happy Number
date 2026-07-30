@@ -1,0 +1,20 @@
+class Solution 
+{
+  public boolean isHappy(int n) 
+  {
+    int s;
+    do{
+      s = 0;
+      while(n != 0)
+      {
+          s += ((Math.pow((n % 10), 2)));
+          n /= 10;
+      }
+      n = s;
+      }while(s > 9);
+      if(s == 1 || s == 7) return true;
+      else return false;
+  }
+}
+
+
