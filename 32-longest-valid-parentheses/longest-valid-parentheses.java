@@ -10,8 +10,8 @@ class Solution
             if (chars[i] == '(') st.push(i);
             else if (chars[i] == ')' && !st.isEmpty()) 
             {
-                int openIndex = st.pop();
-                valid[openIndex] = 1; valid[i] = 1;
+                int idx = st.pop();
+                valid[idx] = 1; valid[i] = 1;
             }
         int maxLen = 0, currLen = 0;
         for (int v : valid) 
